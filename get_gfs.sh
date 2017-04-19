@@ -41,7 +41,7 @@ if [ -z "$INTERVALS" ]; then
 fi
 
 if [ -z "$RESOLUTION" ]; then
-    RESOLUTION=0p50
+    RESOLUTION=0p25
 fi
 
 while getopts  "a:b:dg:i:l:r:t:" flag
@@ -71,22 +71,22 @@ if [ -d /smartmet ]; then
     OUT=/smartmet/data/gfs/$AREA
     CNF=/smartmet/run/data/gfs/cnf
     EDITOR=/smartmet/editor/in
-    TMP=/smartmet/tmp/data/gfs/$AREA/${RT_DATE_HHMM}
+    TMP=/smartmet/tmp/data/gfs_${AREA}_${RESOLUTION}_${RT_DATE_HHMM}
     LOGFILE=/smartmet/logs/data/gfs${RT_HOUR}.log
 else
     OUT=$HOME/data/gfs/$AREA
     CNF=/smartmet/run/data/gfs/cnf
     EDITOR=/smartmet/editor/in
-    TMP=/tmp/gfs.${AREA}.${RESOLUTION}.${RT_DATE_HHMM}
+    TMP=/tmp/gfs_${AREA}_${RESOLUTION}_${RT_DATE_HHMM}
     LOGFILE=/smartmet/logs/data/gfs${RT_HOUR}.log
 fi
 
 OUTNAME=${RT_DATE_HHMM}_gfs_$AREA
 
 # Log everything
-#if [ ! -z "$ISCRON" ]; then
-#    exec &> $LOGFILE
-#fi
+if [ ! -z "$ISCRON" ]; then
+    exec &> $LOGFILE
+fi
 
 echo "Model Reference Time: $RT_ISO"
 echo "Resolution: $RESOLUTION"
@@ -180,15 +180,20 @@ do
 	    runBacground $i
 	fi
     done
+    if [ -n "$DRYRUN" ]; then
+	echo ""
+    fi
 done
 
+if [ -n "$DRYRUN" ]; then
+    exit
+fi
 
 # Wait for the downloads to finish
 wait
 
 echo ""
 echo "Download size $(du -hs $TMP/grb/|cut -f1) and $(ls -1 $TMP/grb/|wc -l) files."
-exit
 
 echo "Converting grib files to qd files..."
 gribtoqd -n -d -t -L 1,10,100,101,103,105,200,214,224,234,244 -p "54,GFS Surface,GFS Pressure" -o $TMP/$OUTNAME.sqd $TMP/grb/
