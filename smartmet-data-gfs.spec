@@ -1,7 +1,7 @@
 %define smartmetroot /smartmet
 
 Name:           smartmet-data-gfs
-Version:        16.10.25
+Version:        17.4.11
 Release:        1%{?dist}.fmi
 Summary:        SmartMet Data GFS
 Group:          System Environment/Base
@@ -38,13 +38,13 @@ mkdir -p .%{smartmetroot}/run/data/gfs/{bin,cnf}
 cat > %{buildroot}%{smartmetroot}/cnf/cron/cron.d/gfs.cron <<EOF
 # Model available after
 # 00 UTC = 03:20 UTC
-15 * * * * utcrun  3 /smartmet/run/data/gfs/bin/dogfs.sh 
+15 * * * * utcrun  3 /smartmet/run/data/gfs/bin/get_gfs.sh 
 # 06 UTC = 09:20 UTC
-15 * * * * utcrun  9 /smartmet/run/data/gfs/bin/dogfs.sh 
+15 * * * * utcrun  9 /smartmet/run/data/gfs/bin/get_gfs.sh 
 # 12 UTC = 15:20 UTC
-15 * * * * utcrun 15 /smartmet/run/data/gfs/bin/dogfs.sh 
+15 * * * * utcrun 15 /smartmet/run/data/gfs/bin/get_gfs.sh 
 # 18 UTC = 21:20 UTC
-15 * * * * utcrun 21 /smartmet/run/data/gfs/bin/dogfs.sh 
+15 * * * * utcrun 21 /smartmet/run/data/gfs/bin/get_gfs.sh 
 EOF
 
 cat > %{buildroot}%{smartmetroot}/cnf/cron/cron.hourly/clean_data_gfs <<EOF
@@ -84,14 +84,12 @@ LEG2_STEP=6
 LEG2_END=240
 
 # Values 0p25 0p50
-RESOLUTION=0p50
-
-CHECK_SIZE=9500000
+RESOLUTION=0p25
 
 EOF
 
 
-install -m 755 %_topdir/SOURCES/smartmet-data-gfs/dogfs.sh %{buildroot}%{smartmetroot}/run/data/gfs/bin/
+install -m 755 %_topdir/SOURCES/smartmet-data-gfs/get_gfs.sh %{buildroot}%{smartmetroot}/run/data/gfs/bin/
 
 %post
 
