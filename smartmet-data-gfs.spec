@@ -1,7 +1,7 @@
 %define smartmetroot /smartmet
 
 Name:           smartmet-data-gfs
-Version:        17.4.11
+Version:        17.4.19
 Release:        1%{?dist}.fmi
 Summary:        SmartMet Data GFS
 Group:          System Environment/Base
@@ -10,8 +10,8 @@ URL:            http://www.weatherproof.fi
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:	noarch
 
-Requires:	smartmet-qdconversion
-Requires:	wgrib2
+Requires:	smartmet-qdtools
+Requires:	curl
 Requires:	bzip2
 
 
@@ -104,6 +104,9 @@ rm -rf $RPM_BUILD_ROOT
 %{smartmetroot}/*
 
 %changelog
+* Wed Apr 19 2017 Mikko Rauhala <mikko.rauhala@fmi.fi> 17.4.19-1.el7.fmi
+- Updated dependencies
+
 * Wed Jun 3 2015 Santeri Oksman <santeri.oksman@fmi.fi> 15.6.3-1.el7.fmi
 - RHEL 7 version
 
