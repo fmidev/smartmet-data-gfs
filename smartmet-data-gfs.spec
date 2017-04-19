@@ -2,7 +2,7 @@
 
 Name:           smartmet-data-gfs
 Version:        17.4.19
-Release:        1%{?dist}.fmi
+Release:        2%{?dist}.fmi
 Summary:        SmartMet Data GFS
 Group:          System Environment/Base
 License:        FMI
@@ -75,13 +75,8 @@ BOTTOM=-10
 LEFT=-120
 RIGHT=0
 
-LEG1_START=0
-LEG1_STEP=3
-LEG1_END=120
-
-LEG2_START=126
-LEG2_STEP=6
-LEG2_END=240
+# Default: ("0 3 126" "132 6 192")
+INTERVALS=("0 3 126" "132 6 192")
 
 # Values 0p25 0p50
 RESOLUTION=0p25
@@ -104,6 +99,9 @@ rm -rf $RPM_BUILD_ROOT
 %{smartmetroot}/*
 
 %changelog
+* Wed Apr 19 2017 Mikko Rauhala <mikko.rauhala@fmi.fi> 17.4.19-2.el7.fmi
+- Updated gfs.cnf to have correct intervals 
+
 * Wed Apr 19 2017 Mikko Rauhala <mikko.rauhala@fmi.fi> 17.4.19-1.el7.fmi
 - Updated dependencies
 
