@@ -1,12 +1,12 @@
 %define smartmetroot /smartmet
 
 Name:           smartmet-data-gfs
-Version:        17.4.19
-Release:        2%{?dist}.fmi
+Version:        17.5.4
+Release:        1%{?dist}.fmi
 Summary:        SmartMet Data GFS
 Group:          System Environment/Base
-License:        FMI
-URL:            http://www.weatherproof.fi
+License:        MIT
+URL:            https://github.com/fmidev/smartmet-data-gfs
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:	noarch
 
@@ -36,6 +36,7 @@ mkdir -p .%{smartmetroot}/logs/data
 mkdir -p .%{smartmetroot}/run/data/gfs/{bin,cnf}
 
 cat > %{buildroot}%{smartmetroot}/cnf/cron/cron.d/gfs.cron <<EOF
+ISCRON=1
 # Model available after
 # 00 UTC = 03:20 UTC
 15 * * * * utcrun  3 /smartmet/run/data/gfs/bin/get_gfs.sh 
@@ -99,6 +100,9 @@ rm -rf $RPM_BUILD_ROOT
 %{smartmetroot}/*
 
 %changelog
+* Thu May 4 2017 Mikko Rauhala <mikko.rauhala@fmi.fi> 17.5.4-1.el7.fmi
+- Updated cron file to have ISCRON variable
+
 * Wed Apr 19 2017 Mikko Rauhala <mikko.rauhala@fmi.fi> 17.4.19-2.el7.fmi
 - Updated gfs.cnf to have correct intervals 
 
