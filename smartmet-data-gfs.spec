@@ -1,7 +1,7 @@
 %define smartmetroot /smartmet
 
 Name:           smartmet-data-gfs
-Version:        17.5.4
+Version:        17.5.5
 Release:        1%{?dist}.fmi
 Summary:        SmartMet Data GFS
 Group:          System Environment/Base
@@ -36,7 +36,6 @@ mkdir -p .%{smartmetroot}/logs/data
 mkdir -p .%{smartmetroot}/run/data/gfs/{bin,cnf}
 
 cat > %{buildroot}%{smartmetroot}/cnf/cron/cron.d/gfs.cron <<EOF
-ISCRON=1
 # Model available after
 # 00 UTC = 03:20 UTC
 15 * * * * utcrun  3 /smartmet/run/data/gfs/bin/get_gfs.sh 
@@ -100,6 +99,9 @@ rm -rf $RPM_BUILD_ROOT
 %{smartmetroot}/*
 
 %changelog
+* Thu May 5 2017 Mikko Rauhala <mikko.rauhala@fmi.fi> 17.5.5-1.el7.fmi
+- Removed ISCRON variable from cron file, is it now located at mkcron
+
 * Thu May 4 2017 Mikko Rauhala <mikko.rauhala@fmi.fi> 17.5.4-1.el7.fmi
 - Updated cron file to have ISCRON variable
 
