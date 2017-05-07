@@ -1,7 +1,7 @@
 %define smartmetroot /smartmet
 
 Name:           smartmet-data-gfs
-Version:        17.5.5
+Version:        17.5.7
 Release:        1%{?dist}.fmi
 Summary:        SmartMet Data GFS
 Group:          System Environment/Base
@@ -99,6 +99,9 @@ rm -rf $RPM_BUILD_ROOT
 %{smartmetroot}/*
 
 %changelog
+* Sun May 7 2017 Mikko Rauhala <mikko.rauhala@fmi.fi> 17.5.7-1.el7.fmi
+- Fixed log printing when run from cron
+
 * Thu May 5 2017 Mikko Rauhala <mikko.rauhala@fmi.fi> 17.5.5-1.el7.fmi
 - Removed ISCRON variable from cron file, is it now located at mkcron
 
