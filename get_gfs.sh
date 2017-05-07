@@ -78,13 +78,13 @@ else
     CNF=/smartmet/run/data/gfs/cnf
     EDITOR=/smartmet/editor/in
     TMP=/tmp/gfs_${AREA}_${RESOLUTION}_${RT_DATE_HHMM}
-    LOGFILE=/smartmet/logs/data/gfs${RT_HOUR}.log
+    LOGFILE=$HOME/logs/data/gfs${RT_HOUR}.log
 fi
 
 OUTNAME=${RT_DATE_HHMM}_gfs_$AREA
 
-# Log everything
-if [ ! -z "$ISCRON" ]; then
+# Use log file if not run interactively
+if [ $TERM = "dumb" ]; then
     exec &> $LOGFILE
 fi
 
