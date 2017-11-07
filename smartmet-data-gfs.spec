@@ -10,7 +10,8 @@ URL:            https://github.com/fmidev/smartmet-data-gfs
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:	noarch
 
-Requires:	smartmet-qdtools
+%{?el6:Requires: smartmet-qdconversion}
+%{?el7:Requires: smartmet-qdtools}
 Requires:	curl
 Requires:	lbzip2
 
@@ -99,7 +100,7 @@ rm -rf $RPM_BUILD_ROOT
 %{smartmetroot}/*
 
 %changelog
-* Mon Nov 6 2017 Mikko Rauhala <mikko.rauhala@fmi.fi> 17.11.6-1.el7.fmi
+* Mon Nov 6 2017 Mikko Rauhala <mikko.rauhala@fmi.fi> 17.11.6-1.%{?dist}.fmi
 - Switched from bzip2 to lbzip2 for faster compression
 
 * Sun May 7 2017 Mikko Rauhala <mikko.rauhala@fmi.fi> 17.5.7-1.el7.fmi
