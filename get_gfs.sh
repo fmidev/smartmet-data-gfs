@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Finnish Meteorological Institute / Mikko Rauhala (2015-2016)
+# Finnish Meteorological Institute / Mikko Rauhala (2015-2017)
 #
 # SmartMet Data Ingestion Module for GFS Model
 #
@@ -68,18 +68,16 @@ RT_DATE_HHMM=`date -u -d@$RT +%Y%m%d%H%M`
 RT_ISO=`date -u -d@$RT +%Y-%m-%dT%H:%M:%SZ`
 
 if [ -d /smartmet ]; then
-    OUT=/smartmet/data/gfs/$AREA
-    CNF=/smartmet/run/data/gfs/cnf
-    EDITOR=/smartmet/editor/in
-    TMP=/smartmet/tmp/data/gfs_${AREA}_${RESOLUTION}_${RT_DATE_HHMM}
-    LOGFILE=/smartmet/logs/data/gfs${RT_HOUR}.log
+    BASE=/smartmet
 else
-    OUT=$HOME/data/gfs/$AREA
-    CNF=/smartmet/run/data/gfs/cnf
-    EDITOR=/smartmet/editor/in
-    TMP=/tmp/gfs_${AREA}_${RESOLUTION}_${RT_DATE_HHMM}
-    LOGFILE=$HOME/logs/data/gfs${RT_HOUR}.log
+    BASE=$HOME/smartmet
 fi
+
+OUT=$BASE/data/gfs/$AREA
+CNF=$BASE/run/data/gfs/cnf
+EDITOR=$BASE/editor/in
+TMP=$BASE/tmp/data/gfs_${AREA}_${RESOLUTION}_${RT_DATE_HHMM}
+LOGFILE=$BASE/logs/data/gfs_${AREA}_${RT_HOUR}.log
 
 OUTNAME=${RT_DATE_HHMM}_gfs_$AREA
 
@@ -106,7 +104,12 @@ echo "Output pressure level file: ${OUTNAME}_pressure.sqd"
 if [ -z "$DRYRUN" ]; then
     mkdir -p $TMP/grb
     mkdir -p $OUT/{surface,pressure}/querydata
+    mkdir -p $EDITOR
 fi
+
+function log {
+    echo "$(date -u +%H:%M:%S) $1"
+}
 
 function runBacground()
 {
@@ -145,18 +148,18 @@ function downloadStep()
     fi
 
     if $(testFile ${TMP}/grb/${FILE}); then
-	echo "Cached file: $FILE size: $(stat --printf="%s" ${TMP}/grb/${FILE}) messages: $(wgrib2 ${TMP}/grb/${FILE}|wc -l):"
+	log "Cached file: $FILE size: $(stat --printf="%s" ${TMP}/grb/${FILE}) messages: $(wgrib2 ${TMP}/grb/${FILE}|wc -l):"
 	break;
     else
 	while [ 1 ]; do
 	    ((count=count+1))
-	    echo "Downloading file: $FILE try: $count" 
+	    log "Downloading file: $FILE try: $count" 
 
 	    STARTTIME=$(date +%s)
 	    curl -s -S -o $TMP/grb/${FILE} "http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_${RESOLUTION}.pl?file=${FILE}&lev_100_mb=on&lev_150_mb=on&lev_200_mb=on&lev_250_mb=on&lev_300_mb=on&lev_350_mb=on&lev_400_mb=on&lev_450_mb=on&lev_500_mb=on&lev_550_mb=on&lev_600_mb=on&lev_650_mb=on&lev_700_mb=on&lev_750_mb=on&lev_800_mb=on&lev_850_mb=on&lev_900_mb=on&lev_925_mb=on&lev_950_mb=on&lev_975_mb=on&lev_1000_mb=on&lev_surface=on&lev_2_m_above_ground=on&lev_10_m_above_ground=on&lev_mean_sea_level=on&lev_entire_atmosphere=on&lev_entire_atmosphere_%5C%28considered_as_a_single_layer%5C%29=on&lev_low_cloud_layer=on&lev_middle_cloud_layer=on&lev_high_cloud_layer=on&var_CAPE=on&var_CIN=on&var_GUST=on&var_HGT=on&var_ICEC=on&var_LAND=on&var_PEVPR=on&var_PRATE=on&var_PRES=on&var_PRMSL=on&var_PWAT=on&var_RH=on&var_SHTFL=on&var_SNOD=on&var_SOILW=on&var_SPFH=on&var_TCDC=on&var_TMP=on&var_UGRD=on&var_VGRD=on&var_VVEL=on&subregion=&leftlon=${LEFT}&rightlon=${RIGHT}&toplat=${TOP}&bottomlat=${BOTTOM}&dir=%2Fgfs.${RT_DATE_HH}"
 	    ENDTIME=$(date +%s)
 	    if $(testFile ${TMP}/grb/${FILE}); then
-		echo "Downloaded file: $FILE size: $(stat --printf="%s" ${TMP}/grb/${FILE}) messages: $(wgrib2 ${TMP}/grb/${FILE}|wc -l) time: $(($ENDTIME - $STARTTIME))s wait: $((($ENDTIME - $STEPSTARTTIME) - ($ENDTIME - $STEPSTARTTIME)))s"
+		log "Downloaded file: $FILE size: $(stat --printf="%s" ${TMP}/grb/${FILE}) messages: $(wgrib2 ${TMP}/grb/${FILE}|wc -l) time: $(($ENDTIME - $STARTTIME))s wait: $((($ENDTIME - $STEPSTARTTIME) - ($ENDTIME - $STEPSTARTTIME)))s"
 		break;
 	    fi
 
@@ -171,7 +174,7 @@ function downloadStep()
 # Download intervals 
 for l in "${INTERVALS[@]}"
 do
-    echo "Downloading interval $l"
+    log "Downloading interval $l"
     for i in $(seq $l)
     do
 	if [ -n "$DRYRUN" ]; then
@@ -192,10 +195,10 @@ fi
 # Wait for the downloads to finish
 wait
 
-echo ""
-echo "Download size $(du -hs $TMP/grb/|cut -f1) and $(ls -1 $TMP/grb/|wc -l) files."
+log ""
+log "Download size $(du -hs $TMP/grb/|cut -f1) and $(ls -1 $TMP/grb/|wc -l) files."
 
-echo "Converting grib files to qd files..."
+log "Converting grib files to qd files..."
 gribtoqd -n -d -t -L 1,10,100,101,103,105,200,214,224,234,244 -p "54,GFS Surface,GFS Pressure" -o $TMP/$OUTNAME.sqd $TMP/grb/
 mv -f $TMP/$OUTNAME.sqd_levelType_1 $TMP/${OUTNAME}_surface.sqd
 mv -f $TMP/$OUTNAME.sqd_levelType_100 $TMP/${OUTNAME}_pressure.sqd
@@ -203,44 +206,50 @@ mv -f $TMP/$OUTNAME.sqd_levelType_100 $TMP/${OUTNAME}_pressure.sqd
 #
 # Post process some parameters 
 #
-echo -n "Calculating parameters: pressure..."
+log "Post processing ${OUTNAME}_pressure.sqd"
 cp -f  $TMP/${OUTNAME}_pressure.sqd $TMP/${OUTNAME}_pressure.sqd.tmp
-echo -n "surface..."
+log "Post processing ${OUTNAME}_surface.sqd"
 qdscript $CNF/gfs-surface.st < $TMP/${OUTNAME}_surface.sqd > $TMP/${OUTNAME}_surface.sqd.tmp
-echo "done"
 
 #
 # Create querydata totalWind and WeatherAndCloudiness objects
 #
-echo -n "Creating Wind and Weather objects: pressure..."
+log "Creating Wind and Weather objects: ${OUTNAME}_pressure.sqd"
 qdversionchange -w 0 7 < $TMP/${OUTNAME}_pressure.sqd.tmp > $TMP/${OUTNAME}_pressure.sqd
-echo -n "surface..."
+log "Creating Wind and Weather objects: ${OUTNAME}_surface.sqd"
 qdversionchange -a 7 < $TMP/${OUTNAME}_surface.sqd.tmp > $TMP/${OUTNAME}_surface.sqd
-echo "done"
 
 #
 # Copy files to SmartMet Workstation and SmartMet Production directories
 # Bzipping the output file is disabled until all countries get new SmartMet version
 # Pressure level
 if [ -s $TMP/${OUTNAME}_pressure.sqd ]; then
-    echo -n "Compressing pressure data..."
-    lbzip2 -k $TMP/${OUTNAME}_pressure.sqd
-    echo "done"
-    echo -n "Copying file to SmartMet Workstation..."
-    mv -f $TMP/${OUTNAME}_pressure.sqd $OUT/pressure/querydata/${OUTNAME}_pressure.sqd
-    mv -f $TMP/${OUTNAME}_pressure.sqd.bz2 $EDITOR/
-    echo "done"
+    log "Testing ${OUTNAME}_pressure.sqd"
+    if qdstat $TMP/${OUTNAME}_pressure.sqd; then
+	log  "Compressing ${OUTNAME}_pressure.sqd"
+	lbzip2 -k $TMP/${OUTNAME}_pressure.sqd
+	log "Moving ${OUTNAME}_pressure.sqd to $OUT/pressure/querydata/"
+	mv -f $TMP/${OUTNAME}_pressure.sqd $OUT/pressure/querydata/
+	log "Moving ${OUTNAME}_pressure.sqd.bz2 to $EDITOR/"
+	mv -f $TMP/${OUTNAME}_pressure.sqd.bz2 $EDITOR/
+    else
+        log "File $TMP/${OUTNAME}_pressure.sqd is not valid qd file."
+    fi
 fi
 
 # Surface
 if [ -s $TMP/${OUTNAME}_surface.sqd ]; then
-    echo -n "Compressing surface data..."
-    lbzip2 -k $TMP/${OUTNAME}_surface.sqd
-    echo "done"
-    echo -n "Copying file to SmartMet Production..."
-    mv -f $TMP/${OUTNAME}_surface.sqd $OUT/surface/querydata/${OUTNAME}_surface.sqd
-    mv -f $TMP/${OUTNAME}_surface.sqd.bz2 $EDITOR/
-    echo "done"
+    log "Testing ${OUTNAME}_surface.sqd"
+    if qdstat $TMP/${OUTNAME}_surface.sqd; then
+        log "Compressing ${OUTNAME}_surface.sqd"
+	lbzip2 -k $TMP/${OUTNAME}_surface.sqd
+	log "Moving ${OUTNAME}_surface.sqd to $OUT/surface/querydata/"
+	mv -f $TMP/${OUTNAME}_surface.sqd $OUT/surface/querydata/
+	log "Moving ${OUTNAME}_surface.sqd.bz2 to $EDITOR"
+	mv -f $TMP/${OUTNAME}_surface.sqd.bz2 $EDITOR/
+    else
+        log "File $TMP/${OUTNAME}_surface.sqd is not valid qd file."
+    fi
 fi
 
 if [ -n "$GRIB_COPY_DEST" ]; then
@@ -251,5 +260,3 @@ rm -f $TMP/*_gfs_*
 rm -f $TMP/grb/gfs*
 rmdir $TMP/grb
 rmdir $TMP
-
-echo "Created files: ${OUTNAME}_surface.sqd and ${OUTNAME}_surface.sqd"

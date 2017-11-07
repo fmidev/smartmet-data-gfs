@@ -2,7 +2,7 @@
 
 Name:           smartmet-data-gfs
 Version:        17.11.6
-Release:        1%{?dist}.fmi
+Release:        2%{?dist}.fmi
 Summary:        SmartMet Data GFS
 Group:          System Environment/Base
 License:        MIT
@@ -100,6 +100,9 @@ rm -rf $RPM_BUILD_ROOT
 %{smartmetroot}/*
 
 %changelog
+* Mon Nov 6 2017 Mikko Rauhala <mikko.rauhala@fmi.fi> 17.11.6-2.%{?dist}.fmi
+- Improved logging and functionality if not /smartmet sytem
+
 * Mon Nov 6 2017 Mikko Rauhala <mikko.rauhala@fmi.fi> 17.11.6-1.%{?dist}.fmi
 - Switched from bzip2 to lbzip2 for faster compression
 
