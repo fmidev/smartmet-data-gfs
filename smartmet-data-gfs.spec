@@ -1,7 +1,7 @@
 %define smartmetroot /smartmet
 
 Name:           smartmet-data-gfs
-Version:        17.5.7
+Version:        17.11.6
 Release:        1%{?dist}.fmi
 Summary:        SmartMet Data GFS
 Group:          System Environment/Base
@@ -12,7 +12,7 @@ BuildArch:	noarch
 
 Requires:	smartmet-qdtools
 Requires:	curl
-Requires:	bzip2
+Requires:	lbzip2
 
 
 %description
@@ -99,6 +99,9 @@ rm -rf $RPM_BUILD_ROOT
 %{smartmetroot}/*
 
 %changelog
+* Mon Nov 6 2017 Mikko Rauhala <mikko.rauhala@fmi.fi> 17.11.6-1.el7.fmi
+- Switched from bzip2 to lbzip2 for faster compression
+
 * Sun May 7 2017 Mikko Rauhala <mikko.rauhala@fmi.fi> 17.5.7-1.el7.fmi
 - Fixed log printing when run from cron
 

@@ -224,7 +224,7 @@ echo "done"
 # Pressure level
 if [ -s $TMP/${OUTNAME}_pressure.sqd ]; then
     echo -n "Compressing pressure data..."
-    bzip2 -k $TMP/${OUTNAME}_pressure.sqd
+    lbzip2 -k $TMP/${OUTNAME}_pressure.sqd
     echo "done"
     echo -n "Copying file to SmartMet Workstation..."
     mv -f $TMP/${OUTNAME}_pressure.sqd $OUT/pressure/querydata/${OUTNAME}_pressure.sqd
@@ -235,7 +235,7 @@ fi
 # Surface
 if [ -s $TMP/${OUTNAME}_surface.sqd ]; then
     echo -n "Compressing surface data..."
-    bzip2 -k $TMP/${OUTNAME}_surface.sqd
+    lbzip2 -k $TMP/${OUTNAME}_surface.sqd
     echo "done"
     echo -n "Copying file to SmartMet Production..."
     mv -f $TMP/${OUTNAME}_surface.sqd $OUT/surface/querydata/${OUTNAME}_surface.sqd
