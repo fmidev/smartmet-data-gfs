@@ -1,8 +1,8 @@
 %define smartmetroot /smartmet
 
 Name:           smartmet-data-gfs
-Version:        17.11.7
-Release:        2%{?dist}.fmi
+Version:        17.11.8
+Release:        1%{?dist}.fmi
 Summary:        SmartMet Data GFS
 Group:          System Environment/Base
 License:        MIT
@@ -17,7 +17,7 @@ Requires:	lbzip2
 
 
 %description
-TODO
+SmartMet Data Ingestion Module for GFS Model
 
 %prep
 
@@ -100,6 +100,9 @@ rm -rf $RPM_BUILD_ROOT
 %{smartmetroot}/*
 
 %changelog
+* Wed Nov 8 2017 Mikko Rauhala <mikko.rauhala@fmi.fi> 17.11.8-1.%{?dist}.fmi
+- Updated spec file
+
 * Tue Nov 7 2017 Mikko Rauhala <mikko.rauhala@fmi.fi> 17.11.7-2.%{?dist}.fmi
 - Added additional test for grib download
 - Changed grib rsync to happen after every file download
