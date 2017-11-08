@@ -125,7 +125,7 @@ function testFile()
     if [ -s $1 ]; then
     # check return value, break if successful (0)
 	grib_count $1 &>/dev/null
-	if [ $? = 0 ]; then
+	if [ $? = 0 ] && [ $(grib_count $1) -gt 0 ]; then
 	    return 0
 	else
 	    rm -f $1
@@ -148,7 +148,7 @@ function downloadStep()
     fi
 
     if $(testFile ${TMP}/grb/${FILE}); then
-	log "Cached file: $FILE size: $(stat --printf="%s" ${TMP}/grb/${FILE}) messages: $(grib_count ${TMP}/grb/${FILE}):"
+	log "Cached file: $FILE size: $(stat --printf="%s" ${TMP}/grb/${FILE}) messages: $(grib_count ${TMP}/grb/${FILE})"
 	break;
     else
 	while [ 1 ]; do
@@ -160,6 +160,9 @@ function downloadStep()
 	    ENDTIME=$(date +%s)
 	    if $(testFile ${TMP}/grb/${FILE}); then
 		log "Downloaded file: $FILE size: $(stat --printf="%s" ${TMP}/grb/${FILE}) messages: $(grib_count ${TMP}/grb/${FILE}) time: $(($ENDTIME - $STARTTIME))s wait: $((($ENDTIME - $STEPSTARTTIME) - ($ENDTIME - $STEPSTARTTIME)))s"
+		if [ -n "$GRIB_COPY_DEST" ]; then
+		    rsync -a ${TMP}/grb/${FILE} $GRIB_COPY_DEST
+		fi
 		break;
 	    fi
 
@@ -221,7 +224,7 @@ qdversionchange -a 7 < $TMP/${OUTNAME}_surface.sqd.tmp > $TMP/${OUTNAME}_surface
 
 #
 # Copy files to SmartMet Workstation and SmartMet Production directories
-# Bzipping the output file is disabled until all countries get new SmartMet version
+#
 # Pressure level
 if [ -s $TMP/${OUTNAME}_pressure.sqd ]; then
     log "Testing ${OUTNAME}_pressure.sqd"
@@ -250,10 +253,6 @@ if [ -s $TMP/${OUTNAME}_surface.sqd ]; then
     else
         log "File $TMP/${OUTNAME}_surface.sqd is not valid qd file."
     fi
-fi
-
-if [ -n "$GRIB_COPY_DEST" ]; then
-    rsync -a $TMP/grb/ $GRIB_COPY_DEST
 fi
 
 rm -f $TMP/*_gfs_*

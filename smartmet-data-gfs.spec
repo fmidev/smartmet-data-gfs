@@ -2,7 +2,7 @@
 
 Name:           smartmet-data-gfs
 Version:        17.11.7
-Release:        1%{?dist}.fmi
+Release:        2%{?dist}.fmi
 Summary:        SmartMet Data GFS
 Group:          System Environment/Base
 License:        MIT
@@ -100,6 +100,10 @@ rm -rf $RPM_BUILD_ROOT
 %{smartmetroot}/*
 
 %changelog
+* Tue Nov 7 2017 Mikko Rauhala <mikko.rauhala@fmi.fi> 17.11.7-2.%{?dist}.fmi
+- Added additional test for grib download
+- Changed grib rsync to happen after every file download
+
 * Tue Nov 7 2017 Mikko Rauhala <mikko.rauhala@fmi.fi> 17.11.7-1.%{?dist}.fmi
 - Fixed grib testing to be more robust
 
