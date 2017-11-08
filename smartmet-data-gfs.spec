@@ -100,23 +100,23 @@ rm -rf $RPM_BUILD_ROOT
 %{smartmetroot}/*
 
 %changelog
-* Wed Nov 8 2017 Mikko Rauhala <mikko.rauhala@fmi.fi> 17.11.8-1.%{?dist}.fmi
+* Wed Nov 8 2017 Mikko Rauhala <mikko.rauhala@fmi.fi> 17.11.8-1%{?dist}.fmi
 - Updated spec file
 
-* Tue Nov 7 2017 Mikko Rauhala <mikko.rauhala@fmi.fi> 17.11.7-2.%{?dist}.fmi
+* Tue Nov 7 2017 Mikko Rauhala <mikko.rauhala@fmi.fi> 17.11.7-2%{?dist}.fmi
 - Added additional test for grib download
 - Changed grib rsync to happen after every file download
 
-* Tue Nov 7 2017 Mikko Rauhala <mikko.rauhala@fmi.fi> 17.11.7-1.%{?dist}.fmi
+* Tue Nov 7 2017 Mikko Rauhala <mikko.rauhala@fmi.fi> 17.11.7-1%{?dist}.fmi
 - Fixed grib testing to be more robust
 
-* Mon Nov 6 2017 Mikko Rauhala <mikko.rauhala@fmi.fi> 17.11.6-2.%{?dist}.fmi
+* Mon Nov 6 2017 Mikko Rauhala <mikko.rauhala@fmi.fi> 17.11.6-2%{?dist}.fmi
 - Improved logging and functionality if not /smartmet sytem
 
-* Mon Nov 6 2017 Mikko Rauhala <mikko.rauhala@fmi.fi> 17.11.6-1.%{?dist}.fmi
+* Mon Nov 6 2017 Mikko Rauhala <mikko.rauhala@fmi.fi> 17.11.6-1%{?dist}.fmi
 - Switched from bzip2 to lbzip2 for faster compression
 
-* Sun May 7 2017 Mikko Rauhala <mikko.rauhala@fmi.fi> 17.5.7-1.el7.fmi
+* Sun May 7 2017 Mikko Rauhala <mikko.rauhala@fmi.fi> 17.5.7-1%{?dist}.fmi
 - Fixed log printing when run from cron
 
 * Thu May 5 2017 Mikko Rauhala <mikko.rauhala@fmi.fi> 17.5.5-1.el7.fmi
