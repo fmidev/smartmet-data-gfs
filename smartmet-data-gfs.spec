@@ -1,7 +1,7 @@
 %define smartmetroot /smartmet
 
 Name:           smartmet-data-gfs
-Version:        17.11.8
+Version:        17.12.7
 Release:        1%{?dist}.fmi
 Summary:        SmartMet Data GFS
 Group:          System Environment/Base
@@ -82,6 +82,7 @@ INTERVALS=("0 3 126" "132 6 192")
 # Values 0p25 0p50
 RESOLUTION=0p25
 
+#GRIB_COPY_DEST= 
 EOF
 
 
@@ -100,6 +101,9 @@ rm -rf $RPM_BUILD_ROOT
 %{smartmetroot}/*
 
 %changelog
+* Thu Dec 7 2017 Mikko Rauhala <mikko.rauhala@fmi.fi> 17.12.7-1%{?dist}.fmi
+- rsync now creates sub director for each model run
+
 * Wed Nov 8 2017 Mikko Rauhala <mikko.rauhala@fmi.fi> 17.11.8-1%{?dist}.fmi
 - Updated spec file
 
