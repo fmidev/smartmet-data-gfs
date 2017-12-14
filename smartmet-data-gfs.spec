@@ -1,8 +1,8 @@
 %define smartmetroot /smartmet
 
 Name:           smartmet-data-gfs
-Version:        17.12.7
-Release:        2%{?dist}.fmi
+Version:        17.12.14
+Release:        1%{?dist}.fmi
 Summary:        SmartMet Data GFS
 Group:          System Environment/Base
 License:        MIT
@@ -101,6 +101,9 @@ rm -rf $RPM_BUILD_ROOT
 %{smartmetroot}/*
 
 %changelog
+* Thu Dec 14 2017 Mikko Rauhala <mikko.rauhala@fmi.fi> 17.12.14-1%{?dist}.fmi
+- rsync now creates flagfile when download is complete
+
 * Thu Dec 7 2017 Mikko Rauhala <mikko.rauhala@fmi.fi> 17.12.7-1%{?dist}.fmi
 - rsync now creates sub director for each model run
 

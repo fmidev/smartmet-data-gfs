@@ -198,6 +198,11 @@ fi
 # Wait for the downloads to finish
 wait
 
+if [ -n "$GRIB_COPY_DEST" ]; then
+    ls -1 $TMP/grb/ > $TMP/${RT_DATE_HH}.txt
+    rsync -a $TMP/${RT_DATE_HH}.txt $GRIB_COPY_DEST/
+fi
+
 log ""
 log "Download size $(du -hs $TMP/grb/|cut -f1) and $(ls -1 $TMP/grb/|wc -l) files."
 
@@ -256,6 +261,7 @@ if [ -s $TMP/${OUTNAME}_surface.sqd ]; then
 fi
 
 rm -f $TMP/*_gfs_*
+rm -f $TMP/*.txt
 rm -f $TMP/grb/gfs*
 rmdir $TMP/grb
 rmdir $TMP
