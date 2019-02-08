@@ -1,7 +1,7 @@
 %define smartmetroot /smartmet
 
 Name:           smartmet-data-gfs
-Version:        17.12.14
+Version:        19.2.8
 Release:        1%{?dist}.fmi
 Summary:        SmartMet Data GFS
 Group:          System Environment/Base
@@ -14,7 +14,6 @@ BuildArch:	noarch
 %{?el7:Requires: smartmet-qdtools}
 Requires:	curl
 Requires:	lbzip2
-
 
 %description
 SmartMet Data Ingestion Module for GFS Model
@@ -77,7 +76,7 @@ LEFT=-120
 RIGHT=0
 
 # Default: ("0 3 126" "132 6 192")
-INTERVALS=("0 3 126" "132 6 192")
+INTERVALS=("0 3 126" "132 6 240")
 
 # Values 0p25 0p50
 RESOLUTION=0p25
@@ -101,6 +100,9 @@ rm -rf $RPM_BUILD_ROOT
 %{smartmetroot}/*
 
 %changelog
+* Fri Feb 8 2019 Mikko Rauhala <mikko.rauhala@fmi.fi> 19.2.8-1%{?dist}.fmi
+- changed download url http->https, added requirements
+
 * Thu Dec 14 2017 Mikko Rauhala <mikko.rauhala@fmi.fi> 17.12.14-1%{?dist}.fmi
 - rsync now creates flagfile when download is complete
 
