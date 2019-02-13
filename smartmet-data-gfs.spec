@@ -1,7 +1,7 @@
 %define smartmetroot /smartmet
 
 Name:           smartmet-data-gfs
-Version:        19.2.8
+Version:        19.2.13
 Release:        1%{?dist}.fmi
 Summary:        SmartMet Data GFS
 Group:          System Environment/Base
@@ -65,6 +65,13 @@ IF(FHOUR % 6 == 0)
      // 6 hour zone
      PAR354 = PAR354 * 2  - avgt(-3, -3, rr3h)
 }
+
+// Relative Humidity for surface
+// calculated from T and DP
+var Es = 6.11 * 10 ^ (7.5 * PAR4 / (237.7+PAR4))
+var E = 6.11 * 10 ^ (7.5 * PAR10 / (237.7+PAR10))
+
+PAR13 = ( E / Es) * 100
 EOF
 
 cat > %{buildroot}%{smartmetroot}/cnf/data/gfs.cnf <<EOF
@@ -100,6 +107,9 @@ rm -rf $RPM_BUILD_ROOT
 %{smartmetroot}/*
 
 %changelog
+* Wed Feb 13 2019 Ville Ilkka <ville.ilkka@fmi.fi> 19.2.13-1%{?dist}.fmi
+- Added Dew Point Temperature and Humidity parameters to surface data
+
 * Fri Feb 8 2019 Mikko Rauhala <mikko.rauhala@fmi.fi> 19.2.8-1%{?dist}.fmi
 - changed download url http->https, added requirements
 
