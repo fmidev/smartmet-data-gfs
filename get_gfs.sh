@@ -37,7 +37,7 @@ if [ -z "$RIGHT" ]; then
 fi
 
 if [ -z "$INTERVALS" ]; then
-    INTERVALS=("0 3 126" "132 6 192")
+    INTERVALS=("0 3 126" "132 6 240")
 fi
 
 if [ -z "$RESOLUTION" ]; then

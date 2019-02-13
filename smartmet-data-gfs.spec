@@ -2,7 +2,7 @@
 
 Name:           smartmet-data-gfs
 Version:        19.2.13
-Release:        1%{?dist}.fmi
+Release:        2%{?dist}.fmi
 Summary:        SmartMet Data GFS
 Group:          System Environment/Base
 License:        MIT
@@ -82,7 +82,8 @@ BOTTOM=-10
 LEFT=-120
 RIGHT=0
 
-# Default: ("0 3 126" "132 6 192")
+# Default: ("0 3 126" "132 6 240")
+# ("start step end")"
 INTERVALS=("0 3 126" "132 6 240")
 
 # Values 0p25 0p50
@@ -107,6 +108,9 @@ rm -rf $RPM_BUILD_ROOT
 %{smartmetroot}/*
 
 %changelog
+* Wed Feb 13 2019 Mikko Rauhala <mikko.rauhala@fmi.fi> 19.2.13-2%{?dist}.fmi
+- Default download range increased to 240h
+
 * Wed Feb 13 2019 Ville Ilkka <ville.ilkka@fmi.fi> 19.2.13-1%{?dist}.fmi
 - Added Dew Point Temperature and Humidity parameters to surface data
 
