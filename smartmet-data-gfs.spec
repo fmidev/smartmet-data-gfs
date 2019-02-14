@@ -2,7 +2,7 @@
 
 Name:           smartmet-data-gfs
 Version:        19.2.13
-Release:        2%{?dist}.fmi
+Release:        3%{?dist}.fmi
 Summary:        SmartMet Data GFS
 Group:          System Environment/Base
 License:        MIT
@@ -65,22 +65,15 @@ IF(FHOUR % 6 == 0)
      // 6 hour zone
      PAR354 = PAR354 * 2  - avgt(-3, -3, rr3h)
 }
-
-// Relative Humidity for surface
-// calculated from T and DP
-var Es = 6.11 * 10 ^ (7.5 * PAR4 / (237.7+PAR4))
-var E = 6.11 * 10 ^ (7.5 * PAR10 / (237.7+PAR10))
-
-PAR13 = ( E / Es) * 100
 EOF
 
 cat > %{buildroot}%{smartmetroot}/cnf/data/gfs.cnf <<EOF
-AREA="caribbean"
+AREA="world"
 
-TOP=40
-BOTTOM=-10
-LEFT=-120
-RIGHT=0
+TOP=90
+BOTTOM=-90
+LEFT=-180
+RIGHT=180
 
 # Default: ("0 3 126" "132 6 240")
 # ("start step end")"
@@ -94,7 +87,7 @@ EOF
 
 
 install -m 755 %_topdir/SOURCES/smartmet-data-gfs/get_gfs.sh %{buildroot}%{smartmetroot}/run/data/gfs/bin/
-
+install -m 644 %_topdir/SOURCES/smartmet-data-gfs/gfs-gribtoqd.cnf %{buildroot}%{smartmetroot}/run/data/gfs/cnf/
 %post
 
 %clean
@@ -108,6 +101,12 @@ rm -rf $RPM_BUILD_ROOT
 %{smartmetroot}/*
 
 %changelog
+* Wed Feb 13 2019 Mikko Rauhala <mikko.rauhala@fmi.fi> 19.2.13-3%{?dist}.fmi
+- Removed RH calculations
+- Fixed DPT link
+- Added local gfs-gribtoqd.cnf
+- get_gfs.sh now converts pressure and surface separately
+
 * Wed Feb 13 2019 Mikko Rauhala <mikko.rauhala@fmi.fi> 19.2.13-2%{?dist}.fmi
 - Default download range increased to 240h
 
