@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Finnish Meteorological Institute / Mikko Rauhala (2015-2017)
+# Finnish Meteorological Institute / Mikko Rauhala (2015-2019)
 #
 # SmartMet Data Ingestion Module for GFS Model
 #
@@ -63,6 +63,7 @@ STEP=6
 RT=`date -u +%s -d '-3 hours'`
 RT="$(( $RT / ($STEP * 3600) * ($STEP * 3600) ))"
 RT_HOUR=`date -u -d@$RT +%H`
+RT_DATE=`date -u -d@$RT +%Y%m%d`
 RT_DATE_HH=`date -u -d@$RT +%Y%m%d%H`
 RT_DATE_HHMM=`date -u -d@$RT +%Y%m%d%H%M`
 RT_ISO=`date -u -d@$RT +%Y-%m-%dT%H:%M:%SZ`
@@ -156,7 +157,7 @@ function downloadStep()
 	    log "Downloading file: $FILE try: $count" 
 
 	    STARTTIME=$(date +%s)
-	    curl -s -S -o $TMP/grb/${FILE} "https://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_${RESOLUTION}.pl?file=${FILE}&lev_100_mb=on&lev_150_mb=on&lev_200_mb=on&lev_250_mb=on&lev_300_mb=on&lev_350_mb=on&lev_400_mb=on&lev_450_mb=on&lev_500_mb=on&lev_550_mb=on&lev_600_mb=on&lev_650_mb=on&lev_700_mb=on&lev_750_mb=on&lev_800_mb=on&lev_850_mb=on&lev_900_mb=on&lev_925_mb=on&lev_950_mb=on&lev_975_mb=on&lev_1000_mb=on&lev_surface=on&lev_2_m_above_ground=on&lev_10_m_above_ground=on&lev_mean_sea_level=on&lev_entire_atmosphere=on&lev_entire_atmosphere_%5C%28considered_as_a_single_layer%5C%29=on&lev_low_cloud_layer=on&lev_middle_cloud_layer=on&lev_high_cloud_layer=on&lev_convective_cloud_layer=on&var_CAPE=on&var_CIN=on&var_GUST=on&var_HGT=on&var_ICEC=on&var_LAND=on&var_PEVPR=on&var_PRATE=on&var_PRES=on&var_PRMSL=on&var_PWAT=on&var_RH=on&var_SHTFL=on&var_SNOD=on&var_SOILW=on&var_SPFH=on&var_TCDC=on&var_TMP=on&var_DPT=on&var_UGRD=on&var_VGRD=on&var_VVEL=on&subregion=&leftlon=${LEFT}&rightlon=${RIGHT}&toplat=${TOP}&bottomlat=${BOTTOM}&dir=%2Fgfs.${RT_DATE_HH}"
+	    curl -s -S -o $TMP/grb/${FILE} "https://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_${RESOLUTION}.pl?file=${FILE}&lev_100_mb=on&lev_150_mb=on&lev_200_mb=on&lev_250_mb=on&lev_300_mb=on&lev_350_mb=on&lev_400_mb=on&lev_450_mb=on&lev_500_mb=on&lev_550_mb=on&lev_600_mb=on&lev_650_mb=on&lev_700_mb=on&lev_750_mb=on&lev_800_mb=on&lev_850_mb=on&lev_900_mb=on&lev_925_mb=on&lev_950_mb=on&lev_975_mb=on&lev_1000_mb=on&lev_surface=on&lev_2_m_above_ground=on&lev_10_m_above_ground=on&lev_mean_sea_level=on&lev_entire_atmosphere=on&lev_entire_atmosphere_%5C%28considered_as_a_single_layer%5C%29=on&lev_low_cloud_layer=on&lev_middle_cloud_layer=on&lev_high_cloud_layer=on&lev_convective_cloud_layer=on&var_CAPE=on&var_CIN=on&var_GUST=on&var_HGT=on&var_ICEC=on&var_LAND=on&var_PEVPR=on&var_PRATE=on&var_PRES=on&var_PRMSL=on&var_PWAT=on&var_RH=on&var_SHTFL=on&var_SNOD=on&var_SOILW=on&var_SPFH=on&var_TCDC=on&var_TMP=on&var_DPT=on&var_UGRD=on&var_VGRD=on&var_DZDT=on&subregion=&leftlon=${LEFT}&rightlon=${RIGHT}&toplat=${TOP}&bottomlat=${BOTTOM}&dir=%2Fgfs.${RT_DATE}%2F${RT_HOUR}"
 	    ENDTIME=$(date +%s)
 	    if $(testFile ${TMP}/grb/${FILE}); then
 		log "Downloaded file: $FILE size: $(stat --printf="%s" ${TMP}/grb/${FILE}) messages: $(grib_count ${TMP}/grb/${FILE}) time: $(($ENDTIME - $STARTTIME))s wait: $((($ENDTIME - $STEPSTARTTIME) - ($ENDTIME - $STEPSTARTTIME)))s"

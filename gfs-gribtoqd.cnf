@@ -70,8 +70,9 @@
 # 79: Total Cloud Cover [%]
 228164;79;Total Cloud Cover (tcc);0;1;200;0
 
-# 140: Vertical Velocity [Pa s**-1]
-135;140;Vertical Velocity (w);0;1
+# 140: Vertical Velocity [m s**-1]
+2009;140;Vertical Velocity (w);0;1000
+260238;140;Vertical Velocity (w);0;1000
 
 # 257: Potential Evaporation Rate [W m**-2]
 260037;257;Potential Evaporation Rate (pevpr);0;1

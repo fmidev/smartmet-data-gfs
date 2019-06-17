@@ -1,8 +1,8 @@
 %define smartmetroot /smartmet
 
 Name:           smartmet-data-gfs
-Version:        19.2.13
-Release:        3%{?dist}.fmi
+Version:        19.6.17
+Release:        1%{?dist}.fmi
 Summary:        SmartMet Data GFS
 Group:          System Environment/Base
 License:        MIT
@@ -13,10 +13,12 @@ BuildArch:	noarch
 %{?el6:Requires: smartmet-qdconversion}
 %{?el7:Requires: smartmet-qdtools}
 Requires:	curl
+Requires:       eccodes
 Requires:	lbzip2
+Requires:       rsync
 
 %description
-SmartMet Data Ingestion Module for GFS Model
+SmartMet data ingest module for GFS model
 
 %prep
 
@@ -101,6 +103,10 @@ rm -rf $RPM_BUILD_ROOT
 %{smartmetroot}/*
 
 %changelog
+* Mon Jun 17 2019 Mikko Rauhala <mikko.rauhala@fmi.fi> 19.6.17-1%{?dist}.fmi
+- Fixed download directory which was changed by GFS v15 update
+- Add DZDT parameter instead of VVEL
+
 * Wed Feb 13 2019 Mikko Rauhala <mikko.rauhala@fmi.fi> 19.2.13-3%{?dist}.fmi
 - Removed RH calculations
 - Fixed DPT link
