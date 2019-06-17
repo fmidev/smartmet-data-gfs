@@ -55,6 +55,10 @@
 # 24: V Component Of Wind [m s**-1]
 132;24;V Component Of Wind (v);0;1
 
+# 43: Vertical Velocity [m s**-1]
+2009;43;Vertical Velocity (w);0;1000
+260238;43;Vertical Velocity (w);0;1000
+
 # 47: Precipitable Water [kg m**-2]
 3054;47;Precipitable Water (pwat);0;1;200;0
 
@@ -69,10 +73,6 @@
 
 # 79: Total Cloud Cover [%]
 228164;79;Total Cloud Cover (tcc);0;1;200;0
-
-# 140: Vertical Velocity [m s**-1]
-2009;140;Vertical Velocity (w);0;1000
-260238;140;Vertical Velocity (w);0;1000
 
 # 257: Potential Evaporation Rate [W m**-2]
 260037;257;Potential Evaporation Rate (pevpr);0;1

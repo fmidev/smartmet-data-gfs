@@ -2,7 +2,7 @@
 
 Name:           smartmet-data-gfs
 Version:        19.6.17
-Release:        1%{?dist}.fmi
+Release:        2%{?dist}.fmi
 Summary:        SmartMet Data GFS
 Group:          System Environment/Base
 License:        MIT
