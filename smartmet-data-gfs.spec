@@ -2,7 +2,7 @@
 
 Name:           smartmet-data-gfs
 Version:        19.6.17
-Release:        3%{?dist}.fmi
+Release:        4%{?dist}.fmi
 Summary:        SmartMet Data GFS
 Group:          System Environment/Base
 License:        MIT
@@ -55,8 +55,8 @@ cat > %{buildroot}%{smartmetroot}/cnf/cron/cron.hourly/clean_data_gfs <<EOF
 # Clean GFS data
 cleaner -maxfiles 4 '_gfs_.*_surface.sqd' %{smartmetroot}/data/gfs
 cleaner -maxfiles 4 '_gfs_.*_pressure.sqd' %{smartmetroot}/data/gfs
-cleaner -maxfiles 4 '_gfs_.*_surface.sqd' %{smartmetroot}/editor/in
-cleaner -maxfiles 4 '_gfs_.*_pressure.sqd' %{smartmetroot}/editor/in
+cleaner -maxfiles 2 '_gfs_.*_surface.sqd' %{smartmetroot}/editor/in
+cleaner -maxfiles 2 '_gfs_.*_pressure.sqd' %{smartmetroot}/editor/in
 EOF
 
 cat > %{buildroot}%{smartmetroot}/run/data/gfs/cnf/gfs-surface.st <<EOF
