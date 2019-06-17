@@ -2,7 +2,7 @@
 
 Name:           smartmet-data-gfs
 Version:        19.6.17
-Release:        2%{?dist}.fmi
+Release:        3%{?dist}.fmi
 Summary:        SmartMet Data GFS
 Group:          System Environment/Base
 License:        MIT
@@ -12,8 +12,9 @@ BuildArch:	noarch
 
 %{?el6:Requires: smartmet-qdconversion}
 %{?el7:Requires: smartmet-qdtools}
+%{?el6:Requires: grib_api}
+%{?el7:Requires: eccodes}
 Requires:	curl
-Requires:       eccodes
 Requires:	lbzip2
 Requires:       rsync
 
