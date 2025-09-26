@@ -78,13 +78,13 @@
 260037;257;Potential Evaporation Rate (pevpr);0;1
 
 # 273: Low Cloud Cover [%]
-228164;273;Low Cloud Cover (lcc);0;1;214;0
+228164;273;Low Cloud Cover (lcc);0;1;100;850
 
 # 274: Medium Cloud Cover [%]
-228164;274;Medium Cloud Cover (mcc);0;1;224;0
+228164;274;Medium Cloud Cover (mcc);0;1;100;500
 
 # 275: High Cloud Cover [%]
-228164;275;High Cloud Cover (hcc);0;1;234;0
+228164;275;High Cloud Cover (hcc);0;1;100;300
 
 # 281: Land-sea Mask [(0 - 1)]
 172;281;Land-sea Mask (lsm);0;1
