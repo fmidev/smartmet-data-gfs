@@ -35,6 +35,7 @@ jobs:
       - name: Setup RPM build environment
         run: |
           rpmdev-setuptree
+          mkdir -p /root/rpmbuild/SOURCES/smartmet-data-gfs
           cp -r . /root/rpmbuild/SOURCES/smartmet-data-gfs/
 
       - name: Build RPM
