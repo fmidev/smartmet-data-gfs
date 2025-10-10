@@ -35,17 +35,17 @@ jobs:
       - name: Setup RPM build environment
         run: |
           rpmdev-setuptree
-          mkdir -p /root/rpmbuild/SOURCES/smartmet-data-gfs
-          cp -r . /root/rpmbuild/SOURCES/smartmet-data-gfs/
+          mkdir -p $HOME/rpmbuild/SOURCES/smartmet-data-gfs
+          cp -r . $HOME/rpmbuild/SOURCES/smartmet-data-gfs/
 
       - name: Build RPM
         run: |
           rpmbuild -ba \
-            /root/rpmbuild/SOURCES/smartmet-data-gfs/smartmet-data-gfs.spec
+            $HOME/rpmbuild/SOURCES/smartmet-data-gfs/smartmet-data-gfs.spec
 
       - name: Upload RPM artifacts
         uses: actions/upload-artifact@v4
         with:
           name: rpm-${{ matrix.os }}
-          path: /root/rpmbuild/RPMS/noarch/*.rpm
+          path: ~/rpmbuild/RPMS/noarch/*.rpm
           if-no-files-found: error
