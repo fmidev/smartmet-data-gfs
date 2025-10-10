@@ -1,0 +1,49 @@
+name: Build RPMs
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build-rpm:
+    name: Build RPM on ${{ matrix.os }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [rocky8, rocky9]
+        include:
+          - os: rocky8
+            container: rockylinux:8
+          - os: rocky9
+            container: rockylinux:9
+    
+    container:
+      image: ${{ matrix.container }}
+    
+    steps:
+      - name: Install build dependencies
+        run: |
+          dnf install -y rpm-build rpmdevtools git
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup RPM build environment
+        run: |
+          rpmdev-setuptree
+          cp -r . /root/rpmbuild/SOURCES/smartmet-data-gfs/
+
+      - name: Build RPM
+        run: |
+          rpmbuild -ba /root/rpmbuild/SOURCES/smartmet-data-gfs/smartmet-data-gfs.spec
+
+      - name: Upload RPM artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: rpm-${{ matrix.os }}
+          path: /root/rpmbuild/RPMS/noarch/*.rpm
+          if-no-files-found: error
