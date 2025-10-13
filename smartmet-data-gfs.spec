@@ -1,7 +1,7 @@
 %define smartmetroot /smartmet
 
 Name:           smartmet-data-gfs
-Version:        21.3.29
+Version:        25.10.13
 Release:        1%{?dist}.fmi
 Summary:        SmartMet Data GFS
 Group:          System Environment/Base
@@ -16,7 +16,7 @@ BuildArch:	noarch
 %{?el7:Requires: eccodes}
 Requires:	curl
 Requires:	lbzip2
-Requires:       rsync
+Requires: rsync
 
 %description
 SmartMet data ingest module for GFS model
@@ -105,6 +105,9 @@ rm -rf $RPM_BUILD_ROOT
 %{smartmetroot}/*
 
 %changelog
+* Mon Oct 13 2025 Mikko Rauhala <mikko.rauhala@fmi.fi> 25.10.13-1%{?dist}.fmi
+- Updated version, fixes gfs cloud parameters
+
 * Mon Jun 17 2019 Mikko Rauhala <mikko.rauhala@fmi.fi> 19.6.17-1%{?dist}.fmi
 - Fixed download directory which was changed by GFS v15 update
 - Add DZDT parameter instead of VVEL
