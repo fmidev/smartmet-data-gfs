@@ -169,7 +169,7 @@ function downloadStep()
 		    rsync -ra ${TMP}/grb/${FILE} $GRIB_COPY_DEST/$RT_DATE_HH/
 		fi
   		if [ -n "$WRF_COPY_DEST" ]; then
-		    rsync -ra ${TMP}/grb/${FILE} $WRF_COPY_DEST/
+		    rsync -ra ${TMP}/grb/${FILE} $WRF_COPY_DEST/$RT_DATE_HH/
 		fi
 		break;
 	    fi
