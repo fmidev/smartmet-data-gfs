@@ -4,7 +4,7 @@ Download and convert NCEP GFS model for SmartMet Workstation and SmartMet Server
 https://nomads.ncep.noaa.gov/
 
 ## INSTALL
-- yum install smartmet-data-gfs
+- dnf install smartmet-data-gfs
 - edit /smartmet/cnf/data/gfs.cnf
 
 ## BUILD RPM
